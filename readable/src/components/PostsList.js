@@ -26,11 +26,14 @@ const PostsList = (props) => (
             pathname: `${post.category}/${post.id}`
           }}>
             {post.title}
-          </Link> | Author: {post.author}, voteScore: {post.voteScore} <Link to={{
+          </Link> | <Link to={{
             pathname: `/add-post/${post.id}`
           }}>
             edit
-          </Link>
+          </Link> | 
+          <button id={post.id} name="upVote" onClick={props.handleVoteClick}>upVote</button>
+          <button id={post.id} name="downVote" onClick={props.handleVoteClick}>downVote</button>
+          <p>Author: {post.author}, voteScore: {post.voteScore}, commentCount: {post.commentCount}</p>
         </li>
       )}
     </ul>

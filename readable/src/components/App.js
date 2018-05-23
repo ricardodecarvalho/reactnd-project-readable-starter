@@ -7,7 +7,6 @@ import PostsSort from './PostsSort'
 import PostsView from './PostsView'
 import PostsByCategoryView from './PostsByCategoryView'
 import PostsAdd from './PostsAdd'
-import '../css/App.css'
 
 class App extends Component {
   componentDidMount() {

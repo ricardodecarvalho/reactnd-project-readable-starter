@@ -81,3 +81,21 @@ export const updatePost = (post) =>
     error => console.log('Error in updatePost: ', error)
   )
   .then(data => data)
+
+
+
+
+//option: upVote OR downVote
+export const votePost = (id, option) =>
+  fetch(`${API}/posts/${id}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({
+      option: option
+    })
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in addPost: ', error)
+  )
+  .then(data => data)

@@ -52,6 +52,7 @@ const posts = (state = {
         lastUpdated: action.receivedAt
       })
     case types.EDIT_POST:
+    case types.RECEIVE_VOTE_POST:
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.map(p => p.id === action.post.id ? action.post : p),

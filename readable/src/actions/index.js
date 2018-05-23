@@ -120,3 +120,23 @@ export const fetchPostsIfNeeded = () => (dispatch, getState) => {
       dispatch(fetchPosts())
     }
 }
+
+//vote post
+const requestVotePost = post => ({
+  type: types.REQUEST_VOTE_POST,
+  post
+})
+
+const receiveVotePost = post => ({
+  type: types.RECEIVE_VOTE_POST,
+  post: post,
+  receivedAt: Date.now()
+})
+
+export const votePost = (post, vote) => dispatch => {
+  dispatch(requestVotePost(post[0]))
+	ServerAPI.votePost(post[0].id, vote)
+  .then(json =>
+    dispatch(receiveVotePost(json))
+  )
+}
