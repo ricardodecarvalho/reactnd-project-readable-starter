@@ -58,6 +58,12 @@ const posts = (state = {
         items: state.items.map(p => p.id === action.post.id ? action.post : p),
         lastUpdated: action.receivedAt
       })
+    case types.RECEIVE_DELETE_POST:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.filter(p => p.id !== action.post.id),
+        lastUpdated: action.receivedAt
+      })
     default:
       return state
   }
@@ -80,6 +86,33 @@ const postById = (
         isFetching: false,
         items: action.post,
         lastUpdated: action.receivedAt
+      })
+    default:
+      return state
+  }
+}
+
+const commentsByPost = (
+  state = {
+    isFetching: false,
+    items: []
+  },
+  action
+) => {
+  switch (action.type) {
+    case types.REQUEST_COMMENTS_BY_POST:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
+    case types.RECEIVE_COMMENTS_BY_POST:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: action.comments
+      })
+    case types.RECEIVE_VOTE_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.map(c => c.id === action.comment.id ? action.comment : c),
       })
     default:
       return state
@@ -125,5 +158,5 @@ function sortPosts (state = initialSortPostsState, action) {
 }
 
 export default combineReducers({
-  categories, posts, postById, sortPosts, form: formReducer
+  categories, posts, postById, commentsByPost, sortPosts, form: formReducer
 })

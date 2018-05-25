@@ -12,7 +12,9 @@ class Categories extends Component {
           <Link to="/">All</Link>
         </li>
 
-          {categories.isFetching && categories.items.length === 0 && <li>Loading...</li>}
+          {categories.isFetching && categories.items.length === 0 && (
+            <li>Loading...</li>
+          )}
           {categories.items.length > 0 &&
             categories.items.map(categorie =>
             <li key={categorie.path}>

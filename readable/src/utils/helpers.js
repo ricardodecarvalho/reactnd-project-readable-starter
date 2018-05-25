@@ -24,3 +24,9 @@ export const validateForm = (values) => {
   }
   return true;
 }
+
+export const convertEpoch = (timestamp) => {
+  let d = new Date(timestamp)
+  const minutes = (d.getMinutes() < 10 ? "0" : "") + d.getMinutes()
+  return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} at ${d.getHours()}:${minutes}:${d.getSeconds()}`
+}

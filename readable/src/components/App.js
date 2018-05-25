@@ -7,6 +7,7 @@ import PostsSort from './PostsSort'
 import PostsView from './PostsView'
 import PostsByCategoryView from './PostsByCategoryView'
 import PostsAdd from './PostsAdd'
+import PostsDetail from './PostsDetail'
 
 class App extends Component {
   componentDidMount() {
@@ -26,6 +27,7 @@ class App extends Component {
           <Route exact path="/add-post" component={PostsAdd} />
           <Route exact path="/add-post/:postId" component={PostsAdd} />
           <Route exact path="/:category" component={PostsByCategoryView} />
+          <Route exact path="/:category/:postId" component={PostsDetail} />
         </Switch>
       </div>
     );

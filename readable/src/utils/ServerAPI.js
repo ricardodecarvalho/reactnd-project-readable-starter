@@ -82,12 +82,43 @@ export const updatePost = (post) =>
   )
   .then(data => data)
 
-
-
-
 //option: upVote OR downVote
 export const votePost = (id, option) =>
   fetch(`${API}/posts/${id}`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({
+      option: option
+    })
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in addPost: ', error)
+  )
+  .then(data => data)
+
+export const deletePost = (id) =>
+  fetch(`${API}/posts/${id}`, {
+    headers,
+    method: 'DELETE'
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in deletePost: ', error)
+  )
+  .then(data => data)
+
+export const getCommentsByPost = (id) =>
+  fetch(`${API}/posts/${id}/comments`, { headers })
+    .then(
+      response => response.json(),
+      error => console.log('Error in getCommentsPost: ', error)
+    )
+    .then(data => data)
+
+//option: upVote OR downVote
+export const voteComment = (id, option) =>
+  fetch(`${API}/comments/${id}`, {
     headers,
     method: 'POST',
     body: JSON.stringify({

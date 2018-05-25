@@ -134,9 +134,65 @@ const receiveVotePost = post => ({
 })
 
 export const votePost = (post, vote) => dispatch => {
-  dispatch(requestVotePost(post[0]))
-	ServerAPI.votePost(post[0].id, vote)
+  dispatch(requestVotePost(post))
+	ServerAPI.votePost(post.id, vote)
   .then(json =>
     dispatch(receiveVotePost(json))
+  )
+}
+
+//delete post
+const requestDeletePost = post => ({
+  type: types.REQUEST_DELETE_POST,
+  post
+})
+
+const receiveDeletePost = post => ({
+  type: types.RECEIVE_DELETE_POST,
+  post: post,
+  receivedAt: Date.now()
+})
+
+export const deletePost = (post) => dispatch => {
+  dispatch(requestDeletePost(post))
+  ServerAPI.deletePost(post.id)
+  .then(json =>
+    dispatch(receiveDeletePost(json))
+  )
+}
+
+// comments by post
+const requestCommentsByPost = () => ({
+  type: types.REQUEST_COMMENTS_BY_POST
+})
+
+const receiveCommentsByPost = comments => ({
+  type: types.RECEIVE_COMMENTS_BY_POST,
+  comments: comments
+})
+export const fetchCommentsByPost = (postId) => dispatch => {
+  dispatch(requestCommentsByPost())
+  ServerAPI.getCommentsByPost(postId)
+  .then(json => {
+    dispatch(receiveCommentsByPost(json))
+  })
+}
+
+//vote comment
+const requestVoteComment = comment => ({
+  type: types.REQUEST_VOTE_COMMENT,
+  comment
+})
+
+const receiveVoteComment = comment => ({
+  type: types.RECEIVE_VOTE_COMMENT,
+  comment: comment,
+})
+
+export const voteComment = (comment, vote) => dispatch => {
+  dispatch(requestVoteComment(comment))
+	ServerAPI.voteComment(comment.id, vote)
+  .then(json =>
+    dispatch(receiveVoteComment(json))
   )
 }
