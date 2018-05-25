@@ -130,3 +130,21 @@ export const voteComment = (id, option) =>
     error => console.log('Error in addPost: ', error)
   )
   .then(data => data)
+
+export const addComment = (comment) =>
+  fetch(`${API}/comments`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({
+      id: comment.id,
+      parentId: comment.parentId,
+      timestamp: comment.timestamp,
+      body: comment.body,
+      author: comment.author
+    })
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in addComment: ', error)
+  )
+  .then(data => data)

@@ -55,14 +55,19 @@ const posts = (state = {
     case types.RECEIVE_VOTE_POST:
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.map(p => p.id === action.post.id ? action.post : p),
-        lastUpdated: action.receivedAt
+        items: state.items.map(p => p.id === action.post.id ? action.post : p)
       })
     case types.RECEIVE_DELETE_POST:
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.filter(p => p.id !== action.post.id),
         lastUpdated: action.receivedAt
+      })
+    case types.INCREMENT_COMMENT_COUNT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.map((p, index) => p.id === action.payload.parentId ?
+        {...state.items[index], commentCount: state.items[index].commentCount + 1} : p)
       })
     default:
       return state
@@ -113,6 +118,18 @@ const commentsByPost = (
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.map(c => c.id === action.comment.id ? action.comment : c),
+      })
+    case types.REQUEST_ADD_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
+    case types.RECEIVE_ADD_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: [
+          ...state.items,
+          {...action.comment}
+        ]
       })
     default:
       return state

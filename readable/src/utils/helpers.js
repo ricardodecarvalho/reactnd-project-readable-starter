@@ -30,3 +30,7 @@ export const convertEpoch = (timestamp) => {
   const minutes = (d.getMinutes() < 10 ? "0" : "") + d.getMinutes()
   return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} at ${d.getHours()}:${minutes}:${d.getSeconds()}`
 }
+
+export const uid = () => {
+  return Math.random().toString(35).substr(2, 22)
+}

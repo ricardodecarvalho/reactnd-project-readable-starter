@@ -1,24 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { deletePost } from '../actions'
 import Vote from './Vote'
+import PostsButtons from './PostsButtons'
 
 class PostsList extends Component {
-  constructor(props) {
-    super(props)
-    this.handleDeleteClick= this.handleDeleteClick.bind(this)
-  }
-
-  handleDeleteClick(e, post) {
-    e.preventDefault()
-    if (window.confirm("Delete?")) {
-      const { dispatch } = this.props
-      dispatch(deletePost(post))
-    }
-  }
-
   render() {
     const { posts, handleRefreshClick } = this.props
     return (
@@ -56,19 +42,8 @@ class PostsList extends Component {
               }}>
                 Details
               </Link>
-              |
-              <Link to={{
-                pathname: `/add-post/${post.id}`
-              }}>
 
-              |
-                edit
-              </Link> |
-              <button
-                id={post.id}
-                onClick={(e) => this.handleDeleteClick(e, post)}>
-                Delete
-              </button>
+              <PostsButtons data={post} />
 
               <Vote data={post} type="post" />
 
@@ -86,12 +61,4 @@ PostsList.propTypes = {
     handleRefreshClick: PropTypes.func.isRequired
 }
 
-function mapStateToProps(state) {
-  return {
-    state
-  }
-}
-
-export default connect(
-  mapStateToProps
-)(PostsList)
+export default PostsList

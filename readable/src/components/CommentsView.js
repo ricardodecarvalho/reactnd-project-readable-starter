@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { fetchCommentsByPost } from '../actions'
 import { convertEpoch } from '../utils/helpers'
 import Vote from './Vote'
+import CommentsAdd from './CommentsAdd'
 import PropTypes from 'prop-types'
 
 class CommentsView extends Component {
@@ -17,10 +18,13 @@ class CommentsView extends Component {
   }
 
   render () {
-    const { commentsByPost } = this.props
+    const { commentsByPost, post } = this.props
+
     return (
       <div>
         <h2>Comments</h2>
+
+          <CommentsAdd post={post} />
 
           {commentsByPost.isFetching && commentsByPost.items.length === 0 && (
             <li>Loading...</li>

@@ -4,6 +4,7 @@ import { fetchPosts } from '../actions'
 import CommentsView from './CommentsView'
 import { convertEpoch } from '../utils/helpers'
 import Vote from './Vote'
+import PostsButtons from './PostsButtons'
 
 class PostsDetail extends Component {
 
@@ -24,6 +25,9 @@ class PostsDetail extends Component {
       <div>
         <h1>{data.title}</h1>
         <Vote data={data} type="post" />
+
+        <PostsButtons data={data} />
+
         <p>by: {data.author} - {convertEpoch(data.timestamp)}</p>
         <p>{data.category}</p>
         <p>voteScore {data.voteScore}</p>

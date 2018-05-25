@@ -1,5 +1,6 @@
 import * as ServerAPI from '../utils/ServerAPI'
 import * as types from '../constants/ActionTypes'
+import {uid} from '../utils/helpers'
 
 //categories
 const requestCategories = () => ({
@@ -86,7 +87,7 @@ const editPost = post => ({
 
 export const sendPost = (post) => dispatch => {
   if(post.id === undefined){
-    post.id = Math.random().toString(35).substr(2, 22)
+    post.id = uid()
     ServerAPI.addPost(post)
     .then(post => {
       dispatch(addPost(post))
@@ -129,8 +130,7 @@ const requestVotePost = post => ({
 
 const receiveVotePost = post => ({
   type: types.RECEIVE_VOTE_POST,
-  post: post,
-  receivedAt: Date.now()
+  post: post
 })
 
 export const votePost = (post, vote) => dispatch => {
@@ -195,4 +195,28 @@ export const voteComment = (comment, vote) => dispatch => {
   .then(json =>
     dispatch(receiveVoteComment(json))
   )
+}
+
+// add comments
+const requestAddComment = () => ({
+  type: types.REQUEST_ADD_COMMENT,
+})
+
+const receiveAddComment = comment => ({
+  type: types.RECEIVE_ADD_COMMENT,
+  comment
+})
+
+export const incrementCommentCount = payload => ({
+  type: types.INCREMENT_COMMENT_COUNT,
+  payload
+});
+
+export const sendComment = (comment) => dispatch => {
+  dispatch(requestAddComment())
+  ServerAPI.addComment(comment)
+  .then(json => {
+    dispatch(receiveAddComment(json))
+    dispatch(incrementCommentCount(json))
+  })
 }
