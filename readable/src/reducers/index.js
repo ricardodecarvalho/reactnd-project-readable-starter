@@ -57,17 +57,26 @@ const posts = (state = {
         isFetching: false,
         items: state.items.map(p => p.id === action.post.id ? action.post : p)
       })
+    case types.REQUEST_DELETE_POST:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
     case types.RECEIVE_DELETE_POST:
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.filter(p => p.id !== action.post.id),
-        lastUpdated: action.receivedAt
+        items: state.items.filter(p => p.id !== action.post.id)        
       })
     case types.INCREMENT_COMMENT_COUNT:
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.map((p, index) => p.id === action.payload.parentId ?
         {...state.items[index], commentCount: state.items[index].commentCount + 1} : p)
+      })
+    case types.DEDUCT_COMMENT_COUNT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.map((p, index) => p.id === action.payload.parentId ?
+        {...state.items[index], commentCount: state.items[index].commentCount - 1} : p)
       })
     default:
       return state
@@ -130,6 +139,15 @@ const commentsByPost = (
           ...state.items,
           {...action.comment}
         ]
+      })
+    case types.REQUEST_DELETE_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
+    case types.RECEIVE_DELETE_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.filter(c => c.id !== action.comment.id)
       })
     default:
       return state

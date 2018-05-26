@@ -148,3 +148,14 @@ export const addComment = (comment) =>
     error => console.log('Error in addComment: ', error)
   )
   .then(data => data)
+
+export const deleteComment = (id) =>
+  fetch(`${API}/comments/${id}`, {
+    headers,
+    method: 'DELETE'
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in deleteComment: ', error)
+  )
+  .then(data => data)

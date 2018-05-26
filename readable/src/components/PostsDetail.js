@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { fetchPosts } from '../actions'
 import CommentsView from './CommentsView'
 import { convertEpoch } from '../utils/helpers'
-import Vote from './Vote'
-import PostsButtons from './PostsButtons'
+import ActionButtons from './ActionButtons'
 
 class PostsDetail extends Component {
 
@@ -24,9 +23,8 @@ class PostsDetail extends Component {
     return (
       <div>
         <h1>{data.title}</h1>
-        <Vote data={data} type="post" />
 
-        <PostsButtons data={data} />
+        <ActionButtons data={data} type="post" />
 
         <p>by: {data.author} - {convertEpoch(data.timestamp)}</p>
         <p>{data.category}</p>

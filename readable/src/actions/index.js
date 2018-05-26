@@ -142,23 +142,45 @@ export const votePost = (post, vote) => dispatch => {
 }
 
 //delete post
-const requestDeletePost = post => ({
-  type: types.REQUEST_DELETE_POST,
-  post
+const requestDeletePost = () => ({
+  type: types.REQUEST_DELETE_POST
 })
 
 const receiveDeletePost = post => ({
   type: types.RECEIVE_DELETE_POST,
-  post: post,
-  receivedAt: Date.now()
+  post: post
 })
 
 export const deletePost = (post) => dispatch => {
-  dispatch(requestDeletePost(post))
+  dispatch(requestDeletePost())
   ServerAPI.deletePost(post.id)
   .then(json =>
     dispatch(receiveDeletePost(json))
   )
+}
+
+//delete comment
+const requestDeleteComment = () => ({
+  type: types.REQUEST_DELETE_COMMENT
+})
+
+const receiveDeleteComment = comment => ({
+  type: types.RECEIVE_DELETE_COMMENT,
+  comment: comment
+})
+
+export const deductCommentCount = payload => ({
+  type: types.DEDUCT_COMMENT_COUNT,
+  payload
+});
+
+export const deleteComment = (comment) => dispatch => {
+  dispatch(requestDeleteComment())
+  ServerAPI.deleteComment(comment.id)
+  .then(json => {
+    dispatch(receiveDeleteComment(json))
+    dispatch(deductCommentCount(json))
+  })
 }
 
 // comments by post

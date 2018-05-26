@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { fetchCommentsByPost } from '../actions'
 import { convertEpoch } from '../utils/helpers'
-import Vote from './Vote'
+import ActionButtons from './ActionButtons'
 import CommentsAdd from './CommentsAdd'
 import PropTypes from 'prop-types'
 
@@ -40,7 +40,7 @@ class CommentsView extends Component {
               <p>Body: {comment.body}</p>
               <p>voteScore: {comment.voteScore}</p>
 
-              <Vote data={comment} type="comment" />
+              <ActionButtons data={comment} type="comment" />
 
               <hr />
             </div>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import Vote from './Vote'
-import PostsButtons from './PostsButtons'
+import ActionButtons from './ActionButtons'
 
 class PostsList extends Component {
   render() {
@@ -43,9 +42,7 @@ class PostsList extends Component {
                 Details
               </Link>
 
-              <PostsButtons data={post} />
-
-              <Vote data={post} type="post" />
+              <ActionButtons data={post} type="post" />
 
               <p>Author: {post.author}, voteScore: {post.voteScore}, commentCount: {post.commentCount}</p>
             </li>
