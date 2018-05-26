@@ -64,7 +64,7 @@ const posts = (state = {
     case types.RECEIVE_DELETE_POST:
       return Object.assign({}, state, {
         isFetching: false,
-        items: state.items.filter(p => p.id !== action.post.id)        
+        items: state.items.filter(p => p.id !== action.post.id)
       })
     case types.INCREMENT_COMMENT_COUNT:
       return Object.assign({}, state, {
@@ -140,6 +140,15 @@ const commentsByPost = (
           {...action.comment}
         ]
       })
+    case types.REQUEST_EDIT_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
+    case types.RECEIVE_EDIT_COMMENT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: state.items.map(c => c.id === action.comment.id ? action.comment : c)
+      })
     case types.REQUEST_DELETE_COMMENT:
       return Object.assign({}, state, {
         isFetching: true,
@@ -148,6 +157,28 @@ const commentsByPost = (
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.filter(c => c.id !== action.comment.id)
+      })
+    default:
+      return state
+  }
+}
+
+const commentById = (
+  state = {
+    isFetching: false,
+    items: []
+  },
+  action
+) => {
+  switch (action.type) {
+    case types.REQUEST_COMMENT_BY_ID:
+      return Object.assign({}, state, {
+        isFetching: true,
+      })
+    case types.RECEIVE_COMMENT_BY_ID:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: action.comment
       })
     default:
       return state
@@ -193,5 +224,11 @@ function sortPosts (state = initialSortPostsState, action) {
 }
 
 export default combineReducers({
-  categories, posts, postById, commentsByPost, sortPosts, form: formReducer
+  categories,
+  posts,
+  postById,
+  commentsByPost,
+  commentById,
+  sortPosts,
+  form: formReducer
 })

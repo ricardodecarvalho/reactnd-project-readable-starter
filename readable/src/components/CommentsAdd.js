@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { sendComment } from '../actions'
+import { sendComment, fetchCommentById } from '../actions'
 import CommentsForm from './CommentsForm'
 import {reset} from 'redux-form'
 import PropTypes from 'prop-types'
@@ -12,17 +12,18 @@ class CommentsAdd extends Component {
 
   handleSubmit = (values, dispatch) => {
     const { post } = this.props
-
-    //const { sendPost, history } = this.props
+    const id = values.id
+    const timestamp = values.timestamp ? values.timestamp : Date.now()
     const data = {
-      id: uid(),
+      id: id,
       parentId: post.id,
-      timestamp: Date.now(),
+      timestamp: timestamp,
       body: values.body,
       author: values.author
     }
     dispatch(sendComment(data))
     dispatch(reset('CommentsForm'))
+    dispatch(fetchCommentById())
   }
 
   render() {

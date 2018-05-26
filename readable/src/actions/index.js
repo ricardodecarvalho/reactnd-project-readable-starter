@@ -234,11 +234,51 @@ export const incrementCommentCount = payload => ({
   payload
 });
 
+const requestEditComment = () => ({
+  type: types.REQUEST_EDIT_COMMENT,
+})
+
+const receiveEditComment = comment => ({
+  type: types.RECEIVE_EDIT_COMMENT,
+  comment
+})
+
 export const sendComment = (comment) => dispatch => {
-  dispatch(requestAddComment())
-  ServerAPI.addComment(comment)
-  .then(json => {
-    dispatch(receiveAddComment(json))
-    dispatch(incrementCommentCount(json))
-  })
+  if(comment.id === undefined){
+    comment.id = uid()
+    dispatch(requestAddComment())
+    ServerAPI.addComment(comment)
+    .then(json => {
+      dispatch(receiveAddComment(json))
+      dispatch(incrementCommentCount(json))
+    })
+  } else {
+    dispatch(requestEditComment())
+    ServerAPI.updateComment(comment)
+    .then(json => {
+      dispatch(receiveEditComment(json))
+    })
+  }
+}
+
+//comment by id
+const requestCommentById = () => ({
+  type: types.REQUEST_COMMENT_BY_ID,
+})
+
+const receiveCommentById = comment => ({
+  type: types.RECEIVE_COMMENT_BY_ID,
+  comment: comment
+})
+
+export const fetchCommentById = (id) => dispatch => {
+  dispatch(requestCommentById())
+  if(undefined !== id) {
+    ServerAPI.getCommentById(id)
+    .then(json => {
+      dispatch(receiveCommentById(json))
+    })
+  } else {
+    dispatch(receiveCommentById({}))
+  }
 }

@@ -53,12 +53,6 @@ function mapStateToProps({ categories, postById }) {
   return {
     categories,
     postById
-    /*
-    posts: postcomponentDidUpdates.reduce((obj, p) => {
-      obj[p.id] = p
-      return obj
-    }, {})
-    */
   }
 }
 

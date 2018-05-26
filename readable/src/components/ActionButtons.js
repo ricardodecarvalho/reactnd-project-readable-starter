@@ -1,14 +1,22 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { deletePost, deleteComment, votePost, voteComment } from '../actions'
+import {
+  deletePost,
+  deleteComment,
+  votePost,
+  voteComment,
+  fetchCommentById
+} from '../actions'
 import PropTypes from 'prop-types'
 
 class ActionButtons extends Component {
   constructor(props) {
     super(props)
+    this.props.dispatch(fetchCommentById())
     this.handleDeleteClick= this.handleDeleteClick.bind(this)
     this.handleVoteClick = this.handleVoteClick.bind(this)
+    this.handleEditCommentClick = this.handleEditCommentClick.bind(this)
   }
 
   static propTypes = {
@@ -25,6 +33,7 @@ class ActionButtons extends Component {
         history.goBack();
       } else if (type === "comment") {
         dispatch(deleteComment(data))
+        this.props.dispatch(fetchCommentById())
       } else {
         window.alert("Delete type undefined")
       }
@@ -43,6 +52,12 @@ class ActionButtons extends Component {
     }
   }
 
+  handleEditCommentClick(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(fetchCommentById(e.target.id))
+  }
+
   render() {
     const { data, type } = this.props
     return (
@@ -56,7 +71,7 @@ class ActionButtons extends Component {
         {type === "comment" && (
           <button
             id={data.id}
-            onClick={(e) => window.alert("Edit comment")}>
+            onClick={(e) => this.handleEditCommentClick(e)}>
             Edit
           </button>
         )}

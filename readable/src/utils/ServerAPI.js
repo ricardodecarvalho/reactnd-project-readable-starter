@@ -149,6 +149,24 @@ export const addComment = (comment) =>
   )
   .then(data => data)
 
+export const updateComment = (comment) =>
+  fetch(`${API}/comments/${comment.id}`, {
+    headers,
+    method: 'PUT',
+    body: JSON.stringify({
+      id: comment.id,
+      parentId: comment.parentId,
+      timestamp: comment.timestamp,
+      body: comment.body,
+      author: comment.author
+    })
+  })
+  .then(
+    response => response.json(),
+    error => console.log('Error in updateComment: ', error)
+  )
+  .then(data => data)
+
 export const deleteComment = (id) =>
   fetch(`${API}/comments/${id}`, {
     headers,
@@ -159,3 +177,11 @@ export const deleteComment = (id) =>
     error => console.log('Error in deleteComment: ', error)
   )
   .then(data => data)
+
+export const getCommentById = (id) =>
+  fetch(`${API}/comments/${id}`, { headers })
+    .then(
+      response => response.json(),
+      error => console.log('Error in getCommentById: ', error)
+    )
+    .then(data => data)

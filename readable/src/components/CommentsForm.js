@@ -1,5 +1,6 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
+import { connect } from 'react-redux'
 import * as valid from '../utils/ValidateForm'
 
 const renderField = ({
@@ -62,6 +63,19 @@ let CommentsForm = props => {
   )
 }
 
-export default reduxForm({
+function mapStateToProps({ commentById }) {
+  return {
+    initialValues: commentById.items
+  }
+}
+
+CommentsForm = reduxForm({
   form: 'CommentsForm',
+  enableReinitialize: true
 })(CommentsForm)
+
+CommentsForm = connect(
+  mapStateToProps
+)(CommentsForm)
+
+export default CommentsForm
