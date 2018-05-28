@@ -101,6 +101,16 @@ const postById = (
         items: action.post,
         lastUpdated: action.receivedAt
       })
+    case types.INCREMENT_POST_VOTE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {...state.items, voteScore: state.items.voteScore + 1}
+      })
+    case types.DEDUCT_POST_VOTE:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {...state.items, voteScore: state.items.voteScore - 1}
+      })
     default:
       return state
   }

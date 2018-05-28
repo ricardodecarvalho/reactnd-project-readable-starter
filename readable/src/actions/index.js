@@ -282,3 +282,22 @@ export const fetchCommentById = (id) => dispatch => {
     dispatch(receiveCommentById({}))
   }
 }
+
+//
+export const incrementPostVote = payload => ({
+  type: types.INCREMENT_POST_VOTE,
+  payload
+});
+
+export const deductPostVote = payload => ({
+  type: types.DEDUCT_POST_VOTE,
+  payload
+});
+
+export const changePostVote = (id, type) => dispatch => {
+  if (type === "upVote") {
+    dispatch(incrementPostVote(id))
+  } else {
+    dispatch(deductPostVote(id))
+  }
+}

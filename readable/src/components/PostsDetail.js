@@ -1,58 +1,63 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { fetchPosts } from '../actions'
+import { fetchPostById } from '../actions'
 import CommentsView from './CommentsView'
 import { convertEpoch } from '../utils/helpers'
 import ActionButtons from './ActionButtons'
+import Room404 from './Room404'
 
 class PostsDetail extends Component {
 
   componentDidMount() {
-    this.props.fetchPosts()
+    const {match: {params}} = this.props
+    this.props.fetchPostById(params.postId)
   }
 
   render () {
-    const { posts, match: {params} } = this.props
+    const { postById } = this.props
 
-    return posts && posts.items.length > 0 ?
-      this.renderData(posts.items.filter(p => p.id === params.postId)[0]) :
-      this.renderLoading()
-  }
-
-  renderData(data) {
     return (
       <div>
-        <h1>{data.title}</h1>
+      {postById.isFetching && postById.items.length === 0 && (
+        <li>Loading...</li>
+      )}
 
-        <ActionButtons data={data} type="post" />
+      {!postById.isFetching && Object.keys(postById.items).length !== 0 && (
+        <div>
+          <h1>{postById.items.title}</h1>
 
-        <p>by: {data.author} - {convertEpoch(data.timestamp)}</p>
-        <p>{data.category}</p>
-        <p>voteScore {data.voteScore}</p>
-        <p>commentCount: {data.commentCount}</p>
-        <p>{data.body}</p>
+          <ActionButtons data={postById.items} type="post" />
 
-        <CommentsView post={data} />
+          <p>by: {postById.items.author} - {convertEpoch(postById.items.timestamp)}</p>
+          <p>{postById.items.category}</p>
+          <p>voteScore {postById.items.voteScore}</p>
+          <p>commentCount: {postById.items.commentCount}</p>
+          <p>{postById.items.body}</p>
 
-      </div>
+          <CommentsView post={postById.items} />
+        </div>
+      )}
+
+      {!postById.isFetching && Object.keys(postById.items).length === 0 && (
+        <Room404 />
+      )}
+
+    </div>
     )
-  }
 
-  renderLoading() {
-      return <div>Loading...</div>
-    }
+  }
 
 }
 
-function mapStateToProps({posts}) {
+function mapStateToProps({postById}) {
   return {
-    posts
+    postById
   }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-      fetchPosts: () => dispatch(fetchPosts())
+      fetchPostById: (postId) => dispatch(fetchPostById(postId))
     }
 }
 

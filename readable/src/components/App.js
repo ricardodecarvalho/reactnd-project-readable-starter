@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { Switch, Route, withRouter, Link } from 'react-router-dom'
 import { fetchCategories } from '../actions'
 import NavBar from './NavBar'
-import PostsSort from './PostsSort'
 import PostsView from './PostsView'
 import PostsByCategoryView from './PostsByCategoryView'
 import PostsAdd from './PostsAdd'
 import PostsDetail from './PostsDetail'
+import Room404 from './Room404'
+import { Container } from 'reactstrap'
 
 class App extends Component {
   componentDidMount() {
@@ -16,11 +17,8 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <NavBar />
-        <PostsSort />
-
-        <Link to="/add-post">Add Post</Link>
 
         <Switch>
           <Route exact path="/" component={PostsView} />
@@ -28,8 +26,9 @@ class App extends Component {
           <Route exact path="/add-post/:postId" component={PostsAdd} />
           <Route exact path="/:category" component={PostsByCategoryView} />
           <Route exact path="/:category/:postId" component={PostsDetail} />
+          <Route exact path='*' component={Room404} />
         </Switch>
-      </div>
+      </Container>
     );
   }
 }

@@ -6,9 +6,12 @@ import {
   deleteComment,
   votePost,
   voteComment,
-  fetchCommentById
+  fetchCommentById,
+  changePostVote
 } from '../actions'
 import PropTypes from 'prop-types'
+import { ButtonGroup, Button } from 'reactstrap'
+import {MdArrowDownward, MdArrowUpward} from 'react-icons/lib/md'
 
 class ActionButtons extends Component {
   constructor(props) {
@@ -40,13 +43,17 @@ class ActionButtons extends Component {
     }
   }
 
-  handleVoteClick(e, data) {
+  handleVoteClick(e, vote, data) {
     e.preventDefault()
-    const { dispatch, type } = this.props
+    const { dispatch, type, match: {params} } = this.props
     if (type === "post") {
-      dispatch(votePost(data, e.target.name))
+      dispatch(votePost(data, vote))
+      if (params && params.postId) {
+        dispatch(changePostVote(params.postId, vote))
+      }
+
     } else if (type === "comment") {
-      dispatch(voteComment(data, e.target.name))
+      dispatch(voteComment(data, vote))
     } else {
       window.alert("Vote type undefined")
     }
@@ -59,40 +66,58 @@ class ActionButtons extends Component {
   }
 
   render() {
-    const { data, type } = this.props
+    const { data, type, match: {params} } = this.props
     return (
       <div>
+
+        {type === "post" && !params.postId && (
+          <Button size="sm" color="link" tag={Link} to={{
+            pathname: `${data.category}/${data.id}`
+          }}>Details</Button>
+        )}
+
         {type === "post" && (
-          <Link to={{
+          <Button size="sm" tag={Link} color="link" to={{
             pathname: `/add-post/${data.id}`
-          }}>edit</Link>
+          }}>Edit</Button>
         )}
 
         {type === "comment" && (
-          <button
+          <Button
+            size="sm"
+            color="link"
             id={data.id}
             onClick={(e) => this.handleEditCommentClick(e)}>
             Edit
-          </button>
+          </Button>
         )}
 
-        <button
+        <Button
+          size="sm"
+          color="link"
           id={data.id}
           onClick={(e) => this.handleDeleteClick(e, data)}>
           Delete
-        </button>
-        <button
+        </Button>
+
+        <Button
+          color="link"
+          size="sm"
           id={data.id}
           name="upVote"
-          onClick={(e) => this.handleVoteClick(e, data)}>
-          upVote
-        </button>
-        <button
+          onClick={(e) => this.handleVoteClick(e, "upVote", data)}>
+          <MdArrowUpward />
+        </Button>
+        {data.voteScore}
+        <Button
+          color="link"
+          size="sm"
           id={data.id}
           name="downVote"
-          onClick={(e) => this.handleVoteClick(e, data)}>
-          downVote
-        </button>
+          onClick={(e) => this.handleVoteClick(e, "downVote",  data)}>
+          <MdArrowDownward />
+        </Button>
+
       </div>
     )
   }
