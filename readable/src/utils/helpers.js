@@ -28,7 +28,8 @@ export const validateForm = (values) => {
 export const convertEpoch = (timestamp) => {
   let d = new Date(timestamp)
   const minutes = (d.getMinutes() < 10 ? "0" : "") + d.getMinutes()
-  return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} at ${d.getHours()}:${minutes}:${d.getSeconds()}`
+  const seconds = (d.getSeconds() < 10 ? "0" : "") + d.getSeconds()
+  return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} at ${d.getHours()}:${minutes}:${seconds}`
 }
 
 export const uid = () => {

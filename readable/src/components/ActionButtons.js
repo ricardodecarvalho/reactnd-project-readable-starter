@@ -11,7 +11,8 @@ import {
 } from '../actions'
 import PropTypes from 'prop-types'
 import { ButtonGroup, Button } from 'reactstrap'
-import {MdArrowDownward, MdArrowUpward} from 'react-icons/lib/md'
+import {MdArrowDownward, MdArrowUpward, MdModeComment} from 'react-icons/lib/md'
+import '../css/ActionButtons.css'
 
 class ActionButtons extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class ActionButtons extends Component {
   render() {
     const { data, type, match: {params} } = this.props
     return (
-      <div>
+      <div className="actions-buttons-group">
 
         {type === "post" && !params.postId && (
           <Button size="sm" color="link" tag={Link} to={{
@@ -108,7 +109,7 @@ class ActionButtons extends Component {
           onClick={(e) => this.handleVoteClick(e, "upVote", data)}>
           <MdArrowUpward />
         </Button>
-        {data.voteScore}
+        <span className="small">{data.voteScore}</span>
         <Button
           color="link"
           size="sm"
@@ -117,6 +118,8 @@ class ActionButtons extends Component {
           onClick={(e) => this.handleVoteClick(e, "downVote",  data)}>
           <MdArrowDownward />
         </Button>
+
+        <span className="small"><MdModeComment /> {data.commentCount} comments</span>
 
       </div>
     )

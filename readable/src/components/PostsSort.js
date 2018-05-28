@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadSort } from '../actions'
 import { InputGroup, InputGroupAddon, InputGroupText, Input, Col } from 'reactstrap'
+import {MdSort} from 'react-icons/lib/md'
 
 class PostsSort extends Component {
   render() {
     const { sortPosts } = this.props;
     return (
-      <Col md="3">
-        <InputGroup>
-          <InputGroupAddon addonType="prepend">Sort By</InputGroupAddon>
+      <Col md="4">
+        <InputGroup size="sm">
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText><MdSort /></InputGroupText>
+          </InputGroupAddon>
           <Input
             type="select"
             defaultValue={sortPosts.active}

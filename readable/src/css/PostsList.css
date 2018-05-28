@@ -1,0 +1,19 @@
+.header-actions {
+  margin: 20px auto;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-subtitle {
+  margin-bottom: 10px !important;
+}
+
+.card-title {
+  margin-bottom: 0 !important;
+}
+
+.card-body {
+  padding-bottom: .7rem !important;
+}

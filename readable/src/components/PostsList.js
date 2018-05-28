@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ActionButtons from './ActionButtons'
 import PostsSort from './PostsSort'
+import { capitalize, convertEpoch } from '../utils/helpers'
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button, Row, Col } from 'reactstrap'
+import '../css/PostsList.css'
+import {MdPerson, MdAdd, MdRefresh} from 'react-icons/lib/md'
 
 class PostsList extends Component {
   render() {
@@ -12,31 +15,29 @@ class PostsList extends Component {
     return (
       <div>
 
-        <Row>
-          <PostsSort />
+        <Row className="header-actions">
           <Col>
-            <Link className="btn btn-primary" to="/add-post">Add Post</Link>
-          </Col>
-          <Col>
-            {posts.lastUpdated &&
-              <span>
-                Last updated at {new Date(posts.lastUpdated).toLocaleTimeString()}.
-                {' '}
-              </span>}
+            <Link className="btn btn-primary btn-sm" to="/add-post">
+            <MdAdd /> Add Post</Link>{' '}
             {!posts.isFetching &&
-              <button className="btn btn-default" onClick={handleRefreshClick}>
-                Refresh
-              </button>}
+              <button className="btn btn-default btn-sm" onClick={handleRefreshClick}>
+                <MdRefresh /> Refresh
+              </button>}{' '}
+            {posts.lastUpdated &&
+              <span className="small">
+                Last updated at {new Date(posts.lastUpdated).toLocaleTimeString()}.
+              </span>}
           </Col>
+          <PostsSort />
         </Row>
 
         <Row>
           <Col>
             {posts.isFetching && posts.items.length === 0 && (
-              <p>Loading...</p>
+              <p className="small">Loading...</p>
             )}
             {!posts.isFetching && posts.items.length === 0 && (
-              <p>Empty.</p>
+              <p className="small">Empty.</p>
             )}
           </Col>
         </Row>
@@ -44,18 +45,23 @@ class PostsList extends Component {
 
         <Row>
           {posts.items.map(post =>
-            <Col md="6" key={post.id}>
+            <Col key={post.id} md="6">
               <Card>
                 <CardBody>
-                  <CardTitle>{post.title}</CardTitle>
-                  <CardSubtitle>By {post.author}, {post.commentCount} comments</CardSubtitle>
+                  <CardSubtitle className="small">
+                    <Link to={`/${post.category}`}>{capitalize(post.category)}</Link>
+                    - Posted by <MdPerson /> <strong>{post.author}</strong> at {convertEpoch(post.timestamp)}</CardSubtitle>
+                  <CardTitle>
+                    <Link to={{
+                      pathname: `${post.category}/${post.id}`
+                    }}>{post.title}</Link>
+                  </CardTitle>
                     <ActionButtons data={post} type="post" />
                 </CardBody>
               </Card>
-            </Col>
-          )}
+              </Col>
+            )}
         </Row>
-
       </div>
     )
   }

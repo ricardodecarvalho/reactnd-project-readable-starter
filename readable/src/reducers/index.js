@@ -196,7 +196,7 @@ const commentById = (
 }
 
 const initialSortPostsState = {
-  active: 'votes-desc',
+  active: 'date-desc',
   sorts: [
     {
       'id': 'votes-asc',
