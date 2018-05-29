@@ -1,0 +1,24 @@
+p.body {
+  margin: 0 auto;
+}
+
+.firt-line {
+  margin-bottom: 0;
+}
+
+/* animation */
+.success-comments {
+  animation: fadeInOut 50s;
+  -moz-animation: fadeInOut 5s;
+  -webkit-animation: fadeInOut 5s;
+  -o-animation: fadeInOut 5s;
+}
+
+@keyframes fadeInOut {
+    0% {
+        background-color: #eee;
+    }
+    100% {
+        background-color: none;
+    }
+}

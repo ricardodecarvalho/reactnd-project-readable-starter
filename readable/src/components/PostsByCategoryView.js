@@ -19,12 +19,14 @@ class PostsByCategoryView extends Component {
 
   componentDidMount() {
     const { match: { params: { category } } } = this.props;
-    this.props.fetchPostsByCategory(category)
+    if (category && category !== '') {
+      this.props.fetchPostsByCategory(category)
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { match: { params: { category } } } = this.props;
-    if (category !== prevProps.match.params.category) {
+    if (category !== prevProps.match.params.category && category !== '') {
       this.props.fetchPostsByCategory(category)
     }
   }
@@ -33,6 +35,10 @@ class PostsByCategoryView extends Component {
     e.preventDefault()
     const { match: { params: { category } } } = this.props;
     this.props.fetchPostsByCategory(category)
+  }
+
+  categoryIsValid(category, categories) {
+    return categories.items.filter(c => c.name === category).length
   }
 
   render() {
@@ -54,10 +60,11 @@ class PostsByCategoryView extends Component {
   }
 }
 
-function mapStateToProps({ sortPosts, posts }) {
+function mapStateToProps({ sortPosts, posts, categories }) {
     return {
         sortPosts,
-        posts
+        posts,
+        categories
     }
 }
 

@@ -3,17 +3,18 @@ import { connect } from 'react-redux'
 import { sendPost, fetchPostById } from '../actions'
 import PostsForm from './PostsForm'
 import {reset} from 'redux-form'
+import {Row, Col} from 'reactstrap'
 
 class PostsAdd extends Component {
 
   componentDidMount() {
-    const {match: {params}} = this.props
-    this.props.fetchPostById(params.postId)
+    const {match: {params}} = this.props    
+      this.props.fetchPostById(params.postId)
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.path !== this.props.match.path) {
-      this.props.fetchPostById();
+      this.props.fetchPostById({});
     }
   }
 
@@ -38,13 +39,15 @@ class PostsAdd extends Component {
     const { categories } = this.props
 
     return (
-      <div>
-        <h1>Add Posts</h1>
-        <PostsForm
-          onSubmit={this.handleSubmit}
-          categories={categories}
-        />
-      </div>
+      <Row>
+        <Col md="4">
+          <h1>Add Posts</h1>
+          <PostsForm
+            onSubmit={this.handleSubmit}
+            categories={categories}
+          />
+      </Col>
+      </Row>
     )
   }
 }

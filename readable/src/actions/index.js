@@ -62,16 +62,20 @@ const receivePostById = post => ({
   receivedAt: Date.now()
 })
 
+export const errorReceivePostById = () => ({
+  type: types.ERROR_RECEIVE_POST_BY_ID,
+});
+
 export const fetchPostById = (postId) => dispatch => {
   dispatch(requestPostById())
-  if(undefined !== postId) {
-    ServerAPI.getPostById(postId)
-    .then(json => {
+  ServerAPI.getPostById(postId)
+  .then(json => {
+    if (json.error) {
+      dispatch(errorReceivePostById())
+    } else {
       dispatch(receivePostById(json))
-    })
-  } else {
-    dispatch(receivePostById({}))
-  }
+    }
+  })
 }
 
 // add and edit post

@@ -59,24 +59,12 @@ const posts = (state = {
       })
     case types.REQUEST_DELETE_POST:
       return Object.assign({}, state, {
-        isFetching: true,
+        isFetching: true
       })
     case types.RECEIVE_DELETE_POST:
       return Object.assign({}, state, {
         isFetching: false,
         items: state.items.filter(p => p.id !== action.post.id)
-      })
-    case types.INCREMENT_COMMENT_COUNT:
-      return Object.assign({}, state, {
-        isFetching: false,
-        items: state.items.map((p, index) => p.id === action.payload.parentId ?
-        {...state.items[index], commentCount: state.items[index].commentCount + 1} : p)
-      })
-    case types.DEDUCT_COMMENT_COUNT:
-      return Object.assign({}, state, {
-        isFetching: false,
-        items: state.items.map((p, index) => p.id === action.payload.parentId ?
-        {...state.items[index], commentCount: state.items[index].commentCount - 1} : p)
       })
     default:
       return state
@@ -99,7 +87,8 @@ const postById = (
       return Object.assign({}, state, {
         isFetching: false,
         items: action.post,
-        lastUpdated: action.receivedAt
+        lastUpdated: action.receivedAt,
+        error: false
       })
     case types.INCREMENT_POST_VOTE:
       return Object.assign({}, state, {
@@ -110,6 +99,22 @@ const postById = (
       return Object.assign({}, state, {
         isFetching: false,
         items: {...state.items, voteScore: state.items.voteScore - 1}
+      })
+    case types.INCREMENT_COMMENT_COUNT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {...state.items, commentCount: state.items.commentCount + 1}
+      })
+    case types.DEDUCT_COMMENT_COUNT:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {...state.items, commentCount: state.items.commentCount - 1}
+      })
+    case types.ERROR_RECEIVE_POST_BY_ID:
+      return Object.assign({}, state, {
+        isFetching: false,
+        items: {},
+        error: true
       })
     default:
       return state
@@ -200,22 +205,22 @@ const initialSortPostsState = {
   sorts: [
     {
       'id': 'votes-asc',
-      'title': 'Votes Low-high',
+      'title': 'Votes Low-High',
       'sortBy': ['voteScore', '-timestamp']
     },
     {
       'id': 'votes-desc',
-      'title': 'Votes High-low',
+      'title': 'Votes High-Low',
       'sortBy': ['-voteScore', '-timestamp']
     },
     {
       'id': 'date-asc',
-      'title': 'Date Old-new',
+      'title': 'Date Old-New',
       'sortBy': ['timestamp', '-voteScore']
     },
     {
       'id': 'date-desc',
-      'title': 'Date New-old',
+      'title': 'Date New-Old',
       'sortBy': ['-timestamp', '-voteScore']
     },
   ]

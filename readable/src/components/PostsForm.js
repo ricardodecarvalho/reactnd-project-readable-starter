@@ -2,6 +2,7 @@ import React from 'react'
 import {Field, reduxForm} from 'redux-form'
 import { connect } from 'react-redux'
 import * as valid from '../utils/ValidateForm'
+import {Button, Form, FormGroup, Label, Input, FormFeedback} from 'reactstrap'
 
 const renderField = ({
   input,
@@ -9,13 +10,11 @@ const renderField = ({
   type,
   meta: { touched, error }
 }) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} placeholder={label} type={type} />
-      {touched && (error && <span>{error}</span>)}
-    </div>
-  </div>
+  <FormGroup>
+    <Label>{label}</Label>
+    <Input {...input} placeholder={label} type={type} invalid={touched && (error && (true))} />
+    {touched && (error && <FormFeedback>{error}</FormFeedback>)}
+  </FormGroup>
 )
 
 const renderSelectField = ({
@@ -24,41 +23,24 @@ const renderSelectField = ({
   type,
   meta: { touched, error }, children }
 ) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <select {...input}>
-        {children}
-      </select>
-      {touched && (error && <span>{error}</span>)}
-    </div>
-  </div>
-)
-
-const renderTextareaField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error }, children }
-) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <textarea {...input} placeholder={label}  type={type}></textarea>
-      {touched && (error && <span>{error}</span>)}
-    </div>
-  </div>
+  <FormGroup>
+    <Label>{label}</Label>
+    <Input {...input} type={type} name={label} invalid={touched && (error && (true))}>
+      {children}
+    </Input>
+    {touched && (error && <FormFeedback>{error}</FormFeedback>)}
+  </FormGroup>
 )
 
 let PostsForm = props => {
   const {handleSubmit, pristine, submitting, categories} = props
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Field
         name="title"
         component={renderField}
         type="text"
-        label="title"
+        label="Title"
         validate={[valid.required, valid.maxLength150, valid.minLength3]}
       />
 
@@ -72,10 +54,11 @@ let PostsForm = props => {
 
       <Field
         name="category"
+        type="select"
         component={renderSelectField}
         label="Category"
         validate={[valid.required]}>
-          <option value="">Selec</option>
+          <option value="">Select</option>
           {categories.items.length > 0  && (categories.items.map((category, key) => (
             <option
               key={key}
@@ -87,18 +70,18 @@ let PostsForm = props => {
 
       <Field
         name="body"
-        component={renderTextareaField}
+        component={renderField}
+        type="textarea"
         label="Body"
         validate={[valid.required, valid.maxLength1000, valid.minLength3]}
       />
 
-      <button
-        type="submit"
+      <Button
         className="btn btn-primary"
         disabled={pristine || submitting}>
         Send
-      </button>
-    </form>
+      </Button>
+    </Form>
   )
 }
 

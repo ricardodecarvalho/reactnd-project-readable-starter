@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
+import { scroller } from 'react-scroll'
 import {
   deletePost,
   deleteComment,
@@ -10,7 +11,7 @@ import {
   changePostVote
 } from '../actions'
 import PropTypes from 'prop-types'
-import { ButtonGroup, Button } from 'reactstrap'
+import { Button } from 'reactstrap'
 import {MdArrowDownward, MdArrowUpward, MdModeComment} from 'react-icons/lib/md'
 import '../css/ActionButtons.css'
 
@@ -62,8 +63,17 @@ class ActionButtons extends Component {
 
   handleEditCommentClick(e) {
     e.preventDefault()
+    this.scrollTo()
     const { dispatch } = this.props
     dispatch(fetchCommentById(e.target.id))
+  }
+
+  scrollTo() {
+    scroller.scrollTo('add-comments', {
+      duration: 800,
+      delay: 0,
+      smooth: 'easeInOutQuart'
+    })
   }
 
   render() {
@@ -85,6 +95,7 @@ class ActionButtons extends Component {
 
         {type === "comment" && (
           <Button
+            className="first-button"
             size="sm"
             color="link"
             id={data.id}

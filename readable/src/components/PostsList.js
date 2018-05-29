@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import ActionButtons from './ActionButtons'
 import PostsSort from './PostsSort'
 import { capitalize, convertEpoch } from '../utils/helpers'
-import { Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, Row, Col } from 'reactstrap'
+import { Card, CardBody,
+  CardTitle, CardSubtitle, Row, Col, Alert } from 'reactstrap'
 import '../css/PostsList.css'
 import {MdPerson, MdAdd, MdRefresh} from 'react-icons/lib/md'
+import Loading from './Loading'
 
 class PostsList extends Component {
   render() {
@@ -34,10 +35,12 @@ class PostsList extends Component {
         <Row>
           <Col>
             {posts.isFetching && posts.items.length === 0 && (
-              <p className="small">Loading...</p>
+              <Loading />
             )}
             {!posts.isFetching && posts.items.length === 0 && (
-              <p className="small">Empty.</p>
+              <Alert color="info">
+                No posts for this category.
+              </Alert>
             )}
           </Col>
         </Row>

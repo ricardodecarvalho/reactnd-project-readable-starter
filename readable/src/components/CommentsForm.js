@@ -2,6 +2,7 @@ import React from 'react'
 import {Field, reduxForm} from 'redux-form'
 import { connect } from 'react-redux'
 import * as valid from '../utils/ValidateForm'
+import {Button, Form, FormGroup, Input, FormFeedback} from 'reactstrap'
 
 const renderField = ({
   input,
@@ -9,39 +10,23 @@ const renderField = ({
   type,
   meta: { touched, error }
 }) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} placeholder={label} type={type} />
-      {touched && (error && <span>{error}</span>)}
-    </div>
-  </div>
-)
+  <FormGroup>
 
-const renderTextareaField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error }, children }
-) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <textarea {...input} placeholder={label}  type={type}></textarea>
-      {touched && (error && <span>{error}</span>)}
-    </div>
-  </div>
+    <Input {...input} placeholder={label} type={type} invalid={touched && (error && (true))} />
+    {touched && (error && <FormFeedback>{error}</FormFeedback>)}
+  </FormGroup>
 )
 
 let CommentsForm = props => {
   const {handleSubmit, pristine, submitting} = props
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
 
       <Field
         name="body"
-        component={renderTextareaField}
-        label="Body"
+        component={renderField}
+        type="textarea"
+        label="What are you thoughts?"
         validate={[valid.required, valid.maxLength1000, valid.minLength3]}
       />
 
@@ -49,17 +34,16 @@ let CommentsForm = props => {
         name="author"
         component={renderField}
         type="text"
-        label="Author"
+        label="Who are you?"
         validate={[valid.required, valid.maxLength50, valid.minLength3]}
       />
 
-      <button
-        type="submit"
-        className="btn btn-primary"
+      <Button
+        className="btn btn-success"
         disabled={pristine || submitting}>
         Send
-      </button>
-    </form>
+      </Button>
+    </Form>
   )
 }
 

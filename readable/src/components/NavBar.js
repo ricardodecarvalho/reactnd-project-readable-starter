@@ -6,6 +6,7 @@ import {
   Navbar,
   NavbarToggler,
   NavbarBrand} from 'reactstrap'
+import '../css/NavBar.css'
 
 export default class NavBar extends Component {
   constructor(props) {
@@ -23,15 +24,13 @@ export default class NavBar extends Component {
   }
   render() {
     return (
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand tag={Link} to="/">postBook</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <CategoriesList />
-          </Collapse>
-        </Navbar>
-      </div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand tag={Link} to="/">PostBook</NavbarBrand>
+        <NavbarToggler onClick={this.toggle} />
+        <Collapse isOpen={this.state.isOpen} navbar>
+          <CategoriesList />
+        </Collapse>
+      </Navbar>
     )
   }
 }

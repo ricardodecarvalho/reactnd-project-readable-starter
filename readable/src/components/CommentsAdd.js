@@ -3,11 +3,21 @@ import { sendComment, fetchCommentById } from '../actions'
 import CommentsForm from './CommentsForm'
 import {reset} from 'redux-form'
 import PropTypes from 'prop-types'
-import {uid} from '../utils/helpers'
+import { Element, Events, scroller, scrollSpy } from 'react-scroll'
+import '../css/CommentsAdd.css'
 
 class CommentsAdd extends Component {
   static propTypes = {
     post: PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    Events.scrollEvent.register('end', function (e) {
+      if (arguments && e !== 'add-comments' && arguments[0] === e) {
+        arguments[1].classList.add("success-comments")
+      }
+    });
+    scrollSpy.update();
   }
 
   handleSubmit = (values, dispatch) => {
@@ -24,16 +34,28 @@ class CommentsAdd extends Component {
     dispatch(sendComment(data))
     dispatch(reset('CommentsForm'))
     dispatch(fetchCommentById())
+
+    //scroll
+    const element = values.id !== undefined ? values.id : "last-comment"
+    this.scrollTo(element)
+  }
+
+  scrollTo(element) {
+    scroller.scrollTo(element, {
+      duration: 800,
+      delay: 0,
+      smooth: 'easeInOutQuart',
+      activeClass: 'success-comments'
+    })
   }
 
   render() {
     return (
-      <div>
-        <h3>Add Comments</h3>
+      <Element name="add-comments" className="add-comments">
         <CommentsForm
           onSubmit={this.handleSubmit}
         />
-      </div>
+      </Element>
     )
   }
 }

@@ -6,6 +6,8 @@ import {
   Nav,
   NavItem,
   NavLink} from 'reactstrap'
+  import Loading from './Loading'
+  import '../css/Loading.css'
 
 class CategoriesList extends Component {
   render() {
@@ -17,7 +19,7 @@ class CategoriesList extends Component {
         </NavItem>
 
         {categories.isFetching && categories.items.length === 0 && (
-          <li>Loading...</li>
+          <li className="margin-top-loading"><Loading type="line" /></li>
         )}
 
         {categories.items.length > 0 &&
